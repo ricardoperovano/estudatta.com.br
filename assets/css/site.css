@@ -345,3 +345,16 @@ table.compare { width: 100%; min-width: 480px; border-collapse: collapse; text-a
   body { background: #fff; color: #292b31; }
   .nav, .footer, .waitlist { display: none; }
 }
+
+/* ---------- Utilitárias (sem estilo inline, compatível com a CSP) ---------- */
+.u-fs20 { font-size: 20px; }
+.u-gap8 { gap: 8px; }
+.u-after-faq { margin-top: -48px; padding-bottom: 64px; font-size: 14px; }
+.u-title-imp { max-width: 26ch; margin: 8px 0; }
+.u-mw48 { max-width: 48ch; }
+.u-mw64 { max-width: 64ch; }
+.u-note { font-size: 14px; line-height: 1.6; }
+.u-pb64 { padding-bottom: 64px; }
+.u-text15 { font-size: 15px; line-height: 1.6; }
+.u-pt32 { padding-top: 32px; }
+.u-w420 { width: min(100%, 420px); }
