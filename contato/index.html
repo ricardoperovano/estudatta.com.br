@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Contato · Estudatta</title>
+  <meta name="description" content="Fale com a equipe do Estudatta.">
+  <link rel="canonical" href="https://estudatta.com.br/contato">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#161826">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Estudatta">
+  <meta property="og:title" content="Contato · Estudatta">
+  <meta property="og:description" content="Fale com a equipe do Estudatta.">
+  <meta property="og:url" content="https://estudatta.com.br/contato">
+  <meta property="og:image" content="https://estudatta.com.br/assets/divulgacao/capa-compartilhamento-1200x630.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/marca/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/assets/marca/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/marca/apple-touch-icon-180.png">
+  <link rel="preload" href="/assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/inter-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<nav class="nav" aria-label="Site">
+  <a class="brand" href="/" aria-label="Estudatta — início"><svg viewBox="0 0 64 64" width="22" height="22" aria-hidden="true" fill="none"><path d="M10 54H26V38H30" stroke="#9184d9" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43" cy="38" r="4.5" fill="#9184d9"/><path d="M56 38V10" stroke="#9184d9" stroke-width="9" stroke-linecap="round"/></svg>Estudatta</a>
+  <a href="/ingles">Inglês</a>
+  <a href="/concursos">Concursos</a>
+  <a href="/planos">Planos</a>
+  <a href="/faq">Perguntas</a>
+  <a class="btn btn-primary" href="https://app.estudatta.com.br/cadastro">Criar conta</a>
+  <a class="login" href="https://app.estudatta.com.br/entrar">Entrar</a>
+</nav>
+<main id="conteudo">
+<div class="container">
+  <section class="split">
+    <div class="stack gap-24">
+      <span class="kicker">Contato</span>
+      <h1 class="display">Fale com a gente.</h1>
+      <p class="lead" style="max-width:48ch">Dúvida, problema ou sugestão: escreva pelo formulário ou direto para <a href="mailto:contato@estudatta.com.br">contato@estudatta.com.br</a>.</p>
+      <p class="subtle" style="max-width:48ch;font-size:14px;line-height:1.6">Talvez a resposta já esteja nas <a href="/faq">perguntas frequentes</a>. Sobre o tratamento dos seus dados, veja a <a href="/privacidade">política de privacidade</a>.</p>
+    </div>
+    <div>
+      <form class="form-card" data-contact aria-label="Formulário de contato" action="mailto:contato@estudatta.com.br" method="post" enctype="text/plain">
+        <div class="field"><label for="ct-name">Nome (opcional)</label><input class="input" id="ct-name" name="name" autocomplete="name" maxlength="120"></div>
+        <div class="field"><label for="ct-email">E-mail</label><input class="input" id="ct-email" name="email" type="email" required autocomplete="email" placeholder="voce@exemplo.com"></div>
+        <div class="field"><label for="ct-subject">Assunto</label><select class="select input" id="ct-subject" name="subject"><option>Dúvida sobre o app</option><option>Problema técnico</option><option>Planos e cobrança</option><option>Privacidade e dados</option><option>Outro assunto</option></select></div>
+        <div class="field"><label for="ct-message">Mensagem</label><textarea class="textarea" id="ct-message" name="message" required rows="6" maxlength="4000"></textarea><span class="hint"><span data-count>0</span> de 4000 caracteres. Não envie senhas nem dados de pagamento.</span></div>
+        <div class="notice notice-error" data-status role="alert" hidden><span><span data-error></span> Se preferir, escreva para <a href="mailto:contato@estudatta.com.br">contato@estudatta.com.br</a>.</span></div>
+        <div><button class="btn btn-primary" type="submit">Enviar mensagem</button></div>
+      </form>
+      <div class="form-card" data-contact-done hidden>
+        <p class="notice notice-ok" role="status"><span data-confirmation>Mensagem recebida.</span></p>
+        <div><button class="btn btn-secondary" type="button" data-contact-again>Enviar outra mensagem</button></div>
+      </div>
+    </div>
+  </section>
+</div>
+</main>
+<footer class="footer">
+  <span class="brand-sm"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true" fill="none"><path d="M10 54H26V38H30" stroke="#9184d9" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43" cy="38" r="4.5" fill="#9184d9"/><path d="M56 38V10" stroke="#9184d9" stroke-width="9" stroke-linecap="round"/></svg>Estudatta</span>
+  <nav aria-label="Rodapé"><a href="/privacidade">Privacidade</a><span aria-hidden="true">·</span><a href="/termos">Termos</a><span aria-hidden="true">·</span><a href="/contato">Contato</a></nav>
+</footer>
+</body>
+</html>
