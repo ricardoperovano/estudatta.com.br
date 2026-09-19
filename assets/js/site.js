@@ -139,6 +139,10 @@
       var has = plans.some(function (p) { return p.limits && r[0] in p.limits; });
       if (has) rows.push(row(r[1], plans.map(function (p) { return p.limits && r[0] in p.limits ? r[2](p.limits[r[0]]) : "—"; })));
     });
+    // Recursos presentes em todos os planos, inclusive no Gratuito
+    ["Revisões automáticas", "Simulados e taxa de acerto", "Conquistas, níveis e desafios", "Companheiro Tatá"].forEach(function (label) {
+      rows.push(row(label, plans.map(function () { return "Sim"; })));
+    });
     rows.push(row("Histórico completo das sessões", plans.map(function () { return "Sim"; })));
     rows.push(row("Exportação dos seus dados", plans.map(function () { return "Sim"; })));
     table.querySelector("thead").innerHTML = head;

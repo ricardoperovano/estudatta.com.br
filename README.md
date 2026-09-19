@@ -16,7 +16,7 @@ Site de aquisição do Estudatta (`https://estudatta.com.br`), em **HTML, CSS e 
 | `/termos` | `termos/index.html` |
 | 404 | `404.html` |
 
-Também: `sitemap.xml`, `robots.txt`, `assets/` (CSS, JS, fonte Inter com licença OFL, marca, imagem de compartilhamento).
+Também: `sitemap.xml`, `robots.txt`, `assets/` (CSS, JS, fonte Inter com licença OFL, marca, mascote, imagem de compartilhamento).
 
 Cabeçalho e rodapé se repetem em cada página. Para mudar um item do menu ou do rodapé, altere todos os arquivos `.html`; eles são poucos e idênticos nesse trecho.
 
@@ -66,6 +66,32 @@ Segue o design system do Estudatta (pasta "Identidade visual e design system PWA
 ## Planos exibidos
 
 Gratuito (R$ 0), Essencial (R$ 9,90/mês ou R$ 94,80/ano, recomendado) e Completo (R$ 19,90/mês ou R$ 190,80/ano). A IA para organizar está nos dois planos pagos. Racional e limites: `docs/planos-e-precos.md` no repositório do app.
+
+## Mascote Tatá
+
+O Tatá é o mascote do app: um cronômetro roxo com marcador de livro no lugar da cauda. A geometria é a mesma do componente do app (`apps/web/src/components/mascot/TataSvg.tsx`).
+
+- **Arquivo estático:** `assets/mascote/tata.svg`, na pose ociosa, sem `<style>` interno.
+- **Nas páginas:** SVG inline com as classes do componente (`tata tata--wave`, `tata--focus`, `tata--paused`, `tata--cheer`, `tata--sleep`, `tata--think`). Cada instância tem um `id` próprio no gradiente do rosto.
+- **Animações:** ficam em `site.css`, na seção "Tatá", com o prefixo `.tata`. Com `prefers-reduced-motion: reduce` nada se mexe, e a pose se mantém.
+- **Onde aparece:** no hero da página inicial, sentado no telefone; na seção "Seu companheiro de estudo", com foco, pausa, comemorando e dormindo; e na 404, pensativo.
+
+## Recursos descritos no site
+
+Página inicial:
+- **Como funciona:** em 4 passos.
+- **Recursos:** tipos de sessão, revisões automáticas (1, 7 e 30 dias), simulados, edital coberto, próxima matéria sugerida e metas semanais.
+- **Tatá:** a seção "Seu companheiro de estudo".
+- **Gamificação:** "Conquistas, níveis e desafios", com 8 exemplos das mais de 40 conquistas. Não há ranking, e quebrar a sequência não tira nada.
+- **Para quem:** concursos, vestibular e ENEM, faculdade e residência, idiomas e rotina pessoal.
+
+Outras páginas:
+- **Concursos:** revisões, questões, simulados, edital coberto e próxima matéria.
+- **Inglês:** tipos de sessão, metas semanais de páginas e gamificação.
+- **Planos:** 4 linhas novas, "Sim" em todos os planos. Estão também fixas em `site.js`, depois das linhas de limites.
+- **FAQ:** seção "Revisões, simulados e conquistas".
+
+Tudo isso vale para todos os planos, inclusive o Gratuito. Ao mudar esses recursos no app, revise esses textos.
 
 ## Logo
 

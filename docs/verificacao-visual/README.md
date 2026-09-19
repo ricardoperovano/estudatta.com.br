@@ -36,3 +36,28 @@ Executadas em 18/09/2026, com o site em `http://localhost:5190` e a API em `:802
 - **Console:** nenhum erro de JavaScript em nenhuma página.
 - **HTML:** tags equilibradas em todas as 9 páginas.
 - **Privacidade e termos:** o texto é idêntico ao da versão anterior, com a mesma contagem de palavras (2.405 e 1.515).
+
+## Rodada do mascote e dos novos recursos (18/09/2026)
+
+Capturas refeitas (desktop 1440 em página inteira e celular 390) da página inicial, de planos, concursos, inglês, FAQ e 404, com a API do app rodando.
+
+**Página inicial, de cima para baixo:**
+- Hero com o Tatá acenando, sentado na borda do telefone. No celular ele fica menor, acima do telefone, sem cobrir o texto.
+- "Como funciona" em 4 passos.
+- "Recursos" em 6 cartões.
+- "Seu companheiro de estudo", com 4 estados do Tatá: foco, pausa, comemorando e dormindo.
+- "Conquistas, níveis e desafios", com 8 conquistas e o quadro "sem ranking / a sequência não apaga nada".
+- "Para quem" com 5 cartões, em 3 + 2 no desktop.
+
+**Outras páginas:**
+- **Concursos:** seção "Revisões, questões e simulados".
+- **Inglês:** seção "Sessões, metas e conquistas".
+- **FAQ:** seção nova sobre revisões, simulados e conquistas.
+- **404:** o Tatá pensativo no lugar da logo.
+
+**Verificações:**
+- **HTML:** tags equilibradas nas 9 páginas. O `id="conteudo"` duplicado em `termos/` já existia e não foi alterado.
+- **Estilos inline:** nenhum `style="..."` nem `<style>` no HTML ou no SVG.
+- **Console:** nenhum erro, e nenhuma rolagem horizontal em 1440 e 390.
+- **Tabela de planos:** com a API, 17 linhas, e as 4 novas vêm depois dos limites. Sem JS, 15 linhas estáticas.
+- **Movimento:** com movimento normal, 19 animações rodam no Tatá. Com `reducedMotion: "reduce"`, nenhuma.
