@@ -2,6 +2,8 @@
 
 Site de aquisição do Estudatta (`https://estudatta.com.br`), em **HTML, CSS e JavaScript puros**, sem framework e sem etapa de build. O app (cadastro, login, PWA) fica em outro repositório e em outro domínio (`https://app.estudatta.com.br`).
 
+O site usa o **tema claro** do design system (fundo `#f3f5fe`, superfícies `#fafbff`, acento `#5d5294`), com as rampas invertidas como no app. A faixa índigo "Seu saldo" é o único bloco escuro. Os tokens ficam no início de `assets/css/site.css`.
+
 ## Páginas
 
 | Rota | Arquivo |
