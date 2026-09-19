@@ -9,7 +9,7 @@ O site usa o **tema claro** do design system (fundo `#f3f5fe`, superfícies `#fa
 | Rota | Arquivo |
 |---|---|
 | `/` | `index.html` |
-| `/ingles` | `ingles/index.html` |
+| `/idiomas` | `idiomas/index.html` (`/ingles` redireciona para cá) |
 | `/concursos` | `concursos/index.html` |
 | `/planos` | `planos/index.html` |
 | `/faq` | `faq/index.html` |
@@ -46,7 +46,7 @@ python3 -m http.server 5190 --bind 127.0.0.1
 
 Abra http://localhost:5190. Para planos, novidades e contato funcionarem, a API do app precisa estar rodando em `:8020` com `CORS_ORIGINS=http://localhost:5190`.
 
-O servidor do Python não aplica as URLs limpas do Nginx: use `/ingles/` (com barra) em vez de `/ingles`.
+O servidor do Python não aplica as URLs limpas do Nginx: use `/idiomas/` (com barra) em vez de `/idiomas`.
 
 ## Publicar
 
@@ -89,7 +89,7 @@ Página inicial:
 
 Outras páginas:
 - **Concursos:** revisões, questões, simulados, edital coberto e próxima matéria.
-- **Inglês:** tipos de sessão, metas semanais de páginas e gamificação.
+- **Idiomas:** mais de 90 idiomas (inglês como padrão), tipos de sessão, metas semanais de páginas e gamificação.
 - **Planos:** 4 linhas novas, "Sim" em todos os planos. Estão também fixas em `site.js`, depois das linhas de limites.
 - **FAQ:** seção "Revisões, simulados e conquistas".
 

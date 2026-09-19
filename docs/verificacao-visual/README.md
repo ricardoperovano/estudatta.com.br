@@ -21,7 +21,7 @@ Capturas feitas com Chrome em 1440×900 (desktop, página inteira) e 390×844 (c
 - **Novidades:** o cadastro por e-mail virou opção secundária, "Receber novidades".
 - **Navegação:** ganhou o link "Entrar".
 
-**Páginas de inglês e concursos:** variações da mesma linguagem visual, com a demonstração do saldo na faixa índigo e a árvore de matérias no visual de `03 Componentes`.
+**Páginas de idiomas e concursos:** variações da mesma linguagem visual, com a demonstração do saldo na faixa índigo e a árvore de matérias no visual de `03 Componentes`.
 
 ## Verificações de comportamento
 
@@ -39,7 +39,7 @@ Executadas em 18/09/2026, com o site em `http://localhost:5190` e a API em `:802
 
 ## Rodada do mascote e dos novos recursos (18/09/2026)
 
-Capturas refeitas (desktop 1440 em página inteira e celular 390) da página inicial, de planos, concursos, inglês, FAQ e 404, com a API do app rodando.
+Capturas refeitas (desktop 1440 em página inteira e celular 390) da página inicial, de planos, concursos, idiomas, FAQ e 404, com a API do app rodando.
 
 **Página inicial, de cima para baixo:**
 - Hero com o Tatá acenando, sentado na borda do telefone. No celular ele fica menor, acima do telefone, sem cobrir o texto.
@@ -51,7 +51,7 @@ Capturas refeitas (desktop 1440 em página inteira e celular 390) da página ini
 
 **Outras páginas:**
 - **Concursos:** seção "Revisões, questões e simulados".
-- **Inglês:** seção "Sessões, metas e conquistas".
+- **Idiomas:** seção "Mais de 90 idiomas" e "Sessões, metas e conquistas".
 - **FAQ:** seção nova sobre revisões, simulados e conquistas.
 - **404:** o Tatá pensativo no lugar da logo.
 
