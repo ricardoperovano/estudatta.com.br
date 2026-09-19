@@ -22,11 +22,11 @@ Cabeçalho e rodapé se repetem em cada página. Para mudar um item do menu ou d
 
 ## Como o site conversa com o app
 
-Tudo o que é essencial funciona sem JavaScript: os botões "Criar conta" e "Entrar" são links comuns para o app, e a página de planos já traz o texto "Valor a definir".
+Tudo o que é essencial funciona sem JavaScript: os botões "Criar conta" e "Entrar" são links comuns para o app, e os cartões e a tabela de planos já trazem os preços no HTML.
 
 O JavaScript (`assets/js/site.js`) acrescenta três coisas, usando só endpoints públicos da API, sem cookie:
 
-- **Planos:** `GET /api/v1/public/plans` substitui os cartões e a tabela pelo catálogo real. Se a API não responder, fica o conteúdo estático. Nenhum preço é escrito no HTML.
+- **Planos:** `GET /api/v1/public/plans` substitui os cartões e a tabela pelo catálogo real (a fonte de verdade é o painel admin do app). Se a API não responder, fica o conteúdo estático, e a alternância mensal/anual usa os valores dos atributos `data-month` e `data-year`. **Ao mudar um preço no painel, atualize também os cartões e a tabela no HTML** (`index.html`, `ingles/`, `concursos/` e `planos/`).
 - **Receber novidades:** `POST /api/v1/public/waitlist`.
 - **Contato:** `POST /api/v1/public/contact`.
 
@@ -61,10 +61,23 @@ A `Content-Security-Policy` do `nginx.conf` libera `connect-src` só para `https
 
 ## Design
 
-Segue a identidade e o design system do Estudatta (pasta "Identidade visual e design system PWA Estudatta", referência `06 Landing.dc.html`). As cores, a tipografia, os espaçamentos e os componentes estão em `assets/css/site.css`, com os mesmos valores dos tokens do app. A comparação visual está em `docs/verificacao-visual/`.
+Segue o design system do Estudatta (pasta "Identidade visual e design system PWA Estudatta", referência `06 Landing.dc.html`), com a logo nova no lugar do símbolo original. As cores, a tipografia, os espaçamentos e os componentes estão em `assets/css/site.css`, com os mesmos valores dos tokens do app. A comparação visual está em `docs/verificacao-visual/`.
+
+## Planos exibidos
+
+Gratuito (R$ 0), Essencial (R$ 9,90/mês ou R$ 94,80/ano, recomendado) e Completo (R$ 19,90/mês ou R$ 190,80/ano). A IA para organizar está nos dois planos pagos. Racional e limites: `docs/planos-e-precos.md` no repositório do app.
+
+## Logo
+
+Os originais estão em `assets/marca/logo-estudada-escuro.png` e `assets/marca/logo-estudata-claro.png`, em PNG de 1254 px com fundo sólido. Os tamanhos web (cabeçalho, favicons, ícone da tela inicial) são gerados por:
+
+```
+bash scripts/gerar-logos.sh ../estudatta.com.br/apps/web/public/marca
+```
+
+O argumento é opcional: ele gera também os ícones do app (PWA) na pasta indicada. O script requer ImageMagick. A imagem de compartilhamento `assets/divulgacao/compartilhamento-1200x630.png` foi gerada a partir da logo escura, com a fonte Inter.
 
 ## Pendências do responsável
 
 - **Termos e privacidade:** razão social, CNPJ, endereço, encarregado (DPO) e foro aparecem destacados em damasco para preencher, junto com a revisão jurídica.
-- **Preço do plano Completo:** vem do catálogo do app. Enquanto não houver preço, o site mostra "Valor a definir".
-- **Imagem de compartilhamento:** reexportar `assets/divulgacao/capa-compartilhamento-1200x630.png` com a fonte Inter instalada (limitação registrada no material de marca).
+- **Logo em SVG:** se existir uma versão vetorial da logo nova, ela deixa o cabeçalho e os ícones nítidos em qualquer tamanho.
