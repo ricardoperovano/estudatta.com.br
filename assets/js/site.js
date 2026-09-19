@@ -75,6 +75,20 @@
     });
   }
 
+  function priceCents(plan, iv) {
+    var p = (plan.prices || []).filter(function (x) { return x.interval === iv; })[0];
+    return p ? p.amount_cents : null;
+  }
+
+  function planNote(plan) {
+    if (plan.code === "free") return "Para sempre, sem cartão";
+    var month = priceCents(plan, "month");
+    var year = priceCents(plan, "year");
+    if (interval === "year" && year != null) return "equivale a " + brl(Math.round(year / 12)) + " por mês";
+    if (interval === "month" && year != null) return "ou " + brl(year) + " por ano (" + brl(Math.round(year / 12)) + " por mês)";
+    return month == null ? "" : "";
+  }
+
   function renderPlans() {
     if (!catalog) return;
     document.querySelectorAll("[data-plans]").forEach(function (box) {
@@ -82,15 +96,16 @@
         .map(function (p) {
           var price = priceLabel(p, interval);
           var unset = price === "Valor a definir";
-          var cta = p.code === "free" ? "Começar grátis" : catalog.billing_mode === "disabled" || unset ? "Avisar quando abrir" : "Assinar";
+          var cta = p.code === "free" ? "Começar grátis" : unset ? "Avisar quando abrir" : "Começar com o " + p.name;
           var per = p.code === "free" ? "" : ' <small>/ ' + (interval === "year" ? "ano" : "mês") + "</small>";
           return (
             '<article class="card plan' + (p.recommended ? " card-accent plan-accent" : "") + '">' +
             '<div class="plan-head"><span class="plan-name">' + esc(p.name) + "</span>" +
             (p.recommended ? '<span class="tag tag-accent">Recomendado</span>' : "") + "</div>" +
             '<span class="plan-price tnum">' + esc(price) + per + "</span>" +
+            '<span class="plan-note tnum">' + esc(planNote(p)) + "</span>" +
             "<ul>" + (p.features || []).map(function (f) { return "<li>" + esc(f) + "</li>"; }).join("") + "</ul>" +
-            '<a class="btn ' + (p.recommended ? "btn-primary" : "btn-secondary") + '" href="' + cfg.appUrl + '/cadastro">' + cta + "</a>" +
+            '<a class="btn ' + (p.recommended ? "btn-primary" : "btn-secondary") + '" href="' + cfg.appUrl + '/cadastro">' + esc(cta) + "</a>" +
             "</article>"
           );
         })
@@ -103,11 +118,12 @@
     ["max_active_activities", "Objetivos ativos", function (v) { return v == null ? "Sem limite" : String(v); }],
     ["max_materials", "Materiais cadastrados", function (v) { return v == null ? "Sem limite" : "Até " + v; }],
     ["materials_storage_mb", "Espaço para arquivos", function (v) { return v == null ? "Sem limite" : v >= 1024 ? String(Math.round((v / 1024) * 10) / 10).replace(".", ",") + " GB" : v + " MB"; }],
-    ["recovery_distribution", "Recuperação distribuída nos próximos dias", function (v) { return v ? "Sim" : "Não"; }],
-    ["reports", "Relatórios", function (v) { return v === "full" ? "Completos" : v === "basic" ? "Básicos" : String(v); }],
-    ["reminders", "Lembretes", function (v) { return v === "full" ? "Completos" : v === "basic" ? "Básicos" : String(v); }],
-    ["csv_export", "Exportação do histórico em CSV", function (v) { return v ? "Sim" : "Não"; }],
-    ["ai_daily_actions", "Sugestões por IA (opcionais), por dia", function (v) { return v == null ? "Sem limite" : Number(v) > 0 ? "Até " + v : "Não incluídas"; }],
+    ["recovery_distribution", "Saldo e recuperação da pendência", function (v) { return v ? "Sim" : "Não"; }],
+    ["reports", "Relatórios", function (v) { return v === "full" ? "Semana, mês e trimestre" : v === "basic" ? "Semana" : String(v); }],
+    ["reminders", "Lembretes", function (v) { return v === "full" ? "Completos + resumo por e-mail" : v === "basic" ? "Horário planejado" : String(v); }],
+    ["ai_monthly_actions", "IA para organizar conteúdo e plano, por mês", function (v) { return v == null ? "Sem limite mensal" : Number(v) > 0 ? v + " ações" : "Não incluída"; }],
+    ["ai_daily_actions", "IA: máximo por dia", function (v) { return Number(v) > 0 ? "Até " + v + " ações" : "Não incluída"; }],
+    ["auto_planning", "Distribuição automática das tarefas", function (v) { return v ? "Sim" : "Não"; }],
   ];
 
   function renderCompare() {
@@ -138,7 +154,15 @@
         b.setAttribute("aria-checked", String(b === btn));
       });
       if (catalog) renderPlans();
-      else document.querySelectorAll("[data-per]").forEach(function (el) { el.textContent = "/ " + (interval === "year" ? "ano" : "mês"); });
+      else {
+        // catálogo indisponível: alterna os valores estáticos da página
+        document.querySelectorAll("[data-price]").forEach(function (el) {
+          el.innerHTML = esc(el.getAttribute(interval === "year" ? "data-year" : "data-month")) + ' <small data-per>/ ' + (interval === "year" ? "ano" : "mês") + "</small>";
+        });
+        document.querySelectorAll("[data-note]").forEach(function (el) {
+          el.textContent = el.getAttribute(interval === "year" ? "data-year" : "data-month");
+        });
+      }
     });
   });
 
