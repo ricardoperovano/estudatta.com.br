@@ -121,7 +121,8 @@
     ["recovery_distribution", "Saldo e recuperação da pendência", function (v) { return v ? "Sim" : "Não"; }],
     ["reports", "Relatórios", function (v) { return v === "full" ? "Semana, mês e trimestre" : v === "basic" ? "Semana" : String(v); }],
     ["reminders", "Lembretes", function (v) { return v === "full" ? "Completos + resumo por e-mail" : v === "basic" ? "Horário planejado" : String(v); }],
-    ["ai_monthly_actions", "IA para organizar conteúdo e plano, por mês", function (v) { return v == null ? "Sem limite mensal" : Number(v) > 0 ? v + " ações" : "Não incluída"; }],
+    ["ai_monthly_actions", "IA (organizar, planejar e conversar com o Tatá), por mês", function (v) { return v == null ? "Sem limite mensal" : Number(v) > 0 ? v + " ações" : "Não incluída"; }],
+    ["tata_voice_monthly", "Tatá com voz natural, por mês", function (v) { return v == null ? "Sem limite" : Number(v) > 0 ? v + " falas" : "Só a voz do aparelho"; }],
     ["ai_daily_actions", "IA: máximo por dia", function (v) { return Number(v) > 0 ? "Até " + v + " ações" : "Não incluída"; }],
     ["auto_planning", "Distribuição automática das tarefas", function (v) { return v ? "Sim" : "Não"; }],
   ];
