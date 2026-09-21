@@ -9,8 +9,9 @@ O site usa o **tema claro** do design system (fundo `#f3f5fe`, superfícies `#fa
 | Rota | Arquivo |
 |---|---|
 | `/` | `index.html` |
-| `/idiomas` | `idiomas/index.html` (`/ingles` redireciona para cá) |
+| `/idiomas` | `idiomas/index.html` (`/ingles/index.html` redireciona para cá com meta refresh; o Nginx faz 301) |
 | `/concursos` | `concursos/index.html` |
+| `/vestibular-enem` | `vestibular-enem/index.html` |
 | `/planos` | `planos/index.html` |
 | `/faq` | `faq/index.html` |
 | `/contato` | `contato/index.html` |
@@ -109,3 +110,10 @@ O argumento é opcional: ele gera também os ícones do app (PWA) na pasta indic
 
 - **Termos e privacidade:** razão social, CNPJ, endereço, encarregado (DPO) e foro aparecem destacados em damasco para preencher, junto com a revisão jurídica.
 - **Logo em SVG:** se existir uma versão vetorial da logo nova, ela deixa o cabeçalho e os ícones nítidos em qualquer tamanho.
+
+## SEO e analytics
+
+- Cada página tem título com palavra-chave (≤ 65 caracteres), descrição (≤ 160), `keywords`, canônica **com barra final** (`/concursos/`: é como o GitHub Pages serve), Open Graph e Twitter completos e JSON-LD (`Organization`, `WebSite` e `SoftwareApplication` na home; `BreadcrumbList`, `WebPage` e `FAQPage` nas demais). O `FAQPage` é gerado a partir dos `<details><summary>` da própria página: manter as perguntas no HTML mantém o dado estruturado.
+- `sitemap.xml` com `lastmod`/`priority`; `robots.txt` libera tudo. Links internos sempre com barra final.
+- Google Analytics 4 (`G-8XFNHTHEX7`): carregador no `<head>` e configuração em `assets/js/analytics.js` (sem script inline, por causa da CSP do `nginx.conf`, que libera `googletagmanager.com` e `google-analytics.com`).
+- Ao criar uma página nova: copiar o `<head>` de uma existente, ajustar título/descrição/canônica/JSON-LD, adicionar ao `sitemap.xml` e ao menu de todas as páginas.
