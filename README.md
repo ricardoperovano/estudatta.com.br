@@ -13,6 +13,7 @@ O site usa o **tema claro** do design system (fundo `#f3f5fe`, superfícies `#fa
 | `/concursos` | `concursos/index.html` |
 | `/vestibular-enem` | `vestibular-enem/index.html` |
 | `/planos` | `planos/index.html` |
+| `/en/…` | `en/**/index.html` (gerado; ver abaixo) |
 | `/faq` | `faq/index.html` |
 | `/contato` | `contato/index.html` |
 | `/privacidade` | `privacidade/index.html` |
@@ -110,6 +111,13 @@ O argumento é opcional: ele gera também os ícones do app (PWA) na pasta indic
 
 - **Termos e privacidade:** razão social, CNPJ, endereço, encarregado (DPO) e foro aparecem destacados em damasco para preencher, junto com a revisão jurídica.
 - **Logo em SVG:** se existir uma versão vetorial da logo nova, ela deixa o cabeçalho e os ícones nítidos em qualquer tamanho.
+
+## Inglês (`/en/`) e detecção de idioma
+
+- A versão em inglês é **gerada** a partir das páginas em português: `python3 scripts/build_en.py` (usa `scripts/en_map*.py`, um dicionário frase → tradução, e `scripts/seo.py`). Ao mudar um texto em português, acrescente a tradução no mapa e rode o script; ele avisa as frases sem tradução. Nunca edite `en/` à mão.
+- Rotas: `/en/`, `/en/languages/`, `/en/civil-service-exams/`, `/en/college-entrance-exams/`, `/en/pricing/`, `/en/faq/`, `/en/contact/`, `/en/privacy/`, `/en/terms/`. Todas com `hreflang` (pt-BR, en, x-default → português) nas duas versões e no `sitemap.xml`.
+- `assets/js/lang.js` (carregado no `<head>`): na primeira visita a uma página em português, quem tem o navegador sem português vai para a página equivalente em inglês. Robôs de busca e quem já escolheu (EN/PT no menu, `localStorage estudatta.lang`) nunca são redirecionados. A 404 é uma só (`404.html`) e mostra o texto em inglês quando o caminho começa com `/en/`.
+- Em `/en/`, o `site.js` não substitui os planos pelo catálogo da API (que é em português): fica o HTML traduzido, com a alternância mensal/anual pelos atributos `data-*`. O app em si continua em português; a versão em inglês avisa isso no topo.
 
 ## SEO e analytics
 

@@ -8,6 +8,12 @@
 (function () {
   "use strict";
   var cfg = window.ESTUDATTA || { appUrl: "https://app.estudatta.com.br", apiUrl: "https://app.estudatta.com.br", productionAppUrl: "https://app.estudatta.com.br" };
+  // Idioma da página: em /en/ as mensagens dos formulários vêm em inglês e os planos ficam com o
+  // HTML estático traduzido (o catálogo da API é em português).
+  var EN = (document.documentElement.lang || "").slice(0, 2) === "en";
+  var L = EN
+    ? { sending: "Sending…", sendFail: "Couldn’t send right now.", sendFailRetry: "Couldn’t send right now. Try again in a moment.", waitlistOk: "Done. We’ll email you when there’s news.", contactFail: "Couldn’t send the message.", contactOk: "Message received. We’ll reply to the email you gave.", offline: "No connection to the server. Your message is still in the form; try again in a moment." }
+    : { sending: "Enviando…", sendFail: "Não foi possível enviar agora.", sendFailRetry: "Não foi possível enviar agora. Tente de novo em instantes.", waitlistOk: "Pronto. Avisamos você por e-mail quando houver novidades.", contactFail: "Não foi possível enviar a mensagem.", contactOk: "Mensagem recebida. Respondemos pelo e-mail informado.", offline: "Sem conexão com o servidor. Sua mensagem continua no formulário; tente de novo em instantes." };
 
   // ---- Links do app -------------------------------------------------------
   if (cfg.appUrl !== cfg.productionAppUrl) {
@@ -33,7 +39,7 @@
         })
         .then(function (data) {
           if (!res.ok) {
-            var msg = (data && data.error && data.error.message) || "Não foi possível enviar agora.";
+            var msg = (data && data.error && data.error.message) || L.sendFail;
             throw new Error(msg);
           }
           return data;
@@ -46,7 +52,7 @@
     if (busy) {
       button.dataset.label = button.textContent;
       button.disabled = true;
-      button.innerHTML = '<span class="spinner" aria-hidden="true"></span>' + (label || "Enviando…");
+      button.innerHTML = '<span class="spinner" aria-hidden="true"></span>' + (label || L.sending);
     } else {
       button.disabled = false;
       button.textContent = button.dataset.label || button.textContent;
@@ -171,7 +177,7 @@
     });
   });
 
-  if (document.querySelector("[data-plans], [data-compare]")) {
+  if (!EN && document.querySelector("[data-plans], [data-compare]")) {
     api("/public/plans")
       .then(function (data) {
         if (data && Array.isArray(data.plans) && data.plans.length) {
@@ -191,15 +197,15 @@
       var input = form.querySelector('input[type="email"]');
       var button = form.querySelector('button[type="submit"]');
       var msg = form.querySelector(".form-msg");
-      setBusy(button, true, "Enviando…");
+      setBusy(button, true, L.sending);
       api("/public/waitlist", { method: "POST", body: { email: input.value.trim(), source: form.getAttribute("data-waitlist") || "site" } })
         .then(function () {
-          form.innerHTML = '<p class="form-msg ok">Pronto. Avisamos você por e-mail quando houver novidades.</p>';
+          form.innerHTML = '<p class="form-msg ok">' + L.waitlistOk + "</p>";
         })
         .catch(function (err) {
           setBusy(button, false);
           msg.className = "form-msg error";
-          msg.textContent = err.message || "Não foi possível enviar agora. Tente de novo em instantes.";
+          msg.textContent = err.message || L.sendFailRetry;
         });
     });
   });
@@ -219,7 +225,7 @@
       var button = contact.querySelector('button[type="submit"]');
       var status = contact.querySelector("[data-status]");
       var data = new FormData(contact);
-      setBusy(button, true, "Enviando…");
+      setBusy(button, true, L.sending);
       status.hidden = true;
       api("/public/contact", {
         method: "POST",
@@ -231,16 +237,16 @@
         },
       })
         .then(function (res) {
-          if (res && res.ok === false) throw new Error(res.message || "Não foi possível enviar a mensagem.");
+          if (res && res.ok === false) throw new Error(res.message || L.contactFail);
           var done = document.querySelector("[data-contact-done]");
-          done.querySelector("[data-confirmation]").textContent = (res && res.message) || "Mensagem recebida. Respondemos pelo e-mail informado.";
+          done.querySelector("[data-confirmation]").textContent = (res && res.message) || L.contactOk;
           contact.hidden = true;
           done.hidden = false;
         })
         .catch(function (err) {
           setBusy(button, false);
           status.hidden = false;
-          status.querySelector("[data-error]").textContent = err.message === "Failed to fetch" ? "Sem conexão com o servidor. Sua mensagem continua no formulário; tente de novo em instantes." : err.message;
+          status.querySelector("[data-error]").textContent = err.message === "Failed to fetch" ? L.offline : err.message;
         });
     });
     var again = document.querySelector("[data-contact-again]");

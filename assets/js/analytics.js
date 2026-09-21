@@ -8,6 +8,7 @@
   var KEY = "estudatta.consent";
   var GA_ID = "G-8XFNHTHEX7";
   var MAX_AGE = 365 * 24 * 60 * 60 * 1000;
+  var EN = (document.documentElement.lang || "").slice(0, 2) === "en";
   var loaded = false;
 
   function read() {
@@ -54,8 +55,11 @@
     box.setAttribute("role", "region");
     box.setAttribute("aria-label", "Aviso de cookies");
     box.innerHTML =
-      '<p>Usamos o Google Analytics para saber quais páginas do site são visitadas. Ele só é ativado se você aceitar; sem isso, nenhum cookie de métricas é gravado. <a href="/privacidade/#cookies-titulo">Saiba mais</a>.</p>' +
-      '<div class="cookie-actions"><button type="button" class="btn btn-secondary" data-choice="denied">Recusar</button><button type="button" class="btn btn-primary" data-choice="granted">Aceitar</button></div>';
+      (EN
+        ? '<p>We use cookies to improve your experience and understand how the site is used. <a href="/en/privacy/#cookies-titulo">Privacy policy</a>.</p>' +
+          '<div class="cookie-actions"><button type="button" class="btn btn-secondary" data-choice="denied">Decline</button><button type="button" class="btn btn-primary" data-choice="granted">Accept</button></div>'
+        : '<p>Usamos cookies para melhorar sua experiência e entender como o site é usado. <a href="/privacidade/#cookies-titulo">Política de privacidade</a>.</p>' +
+          '<div class="cookie-actions"><button type="button" class="btn btn-secondary" data-choice="denied">Recusar</button><button type="button" class="btn btn-primary" data-choice="granted">Aceitar</button></div>');
     box.addEventListener("click", function (e) {
       var b = e.target.closest("button[data-choice]");
       if (!b) return;
