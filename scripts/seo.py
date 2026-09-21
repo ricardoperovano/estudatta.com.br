@@ -5,7 +5,7 @@ import json
 import pathlib
 import re
 
-ROOT = pathlib.Path("/run/media/luiz-ricardo/DATA1/projects/estudatta/estudatta-site")
+ROOT = pathlib.Path(__file__).resolve().parents[1]  # raiz do repositório
 BASE = "https://estudatta.com.br"
 OG_IMG = f"{BASE}/assets/divulgacao/compartilhamento-1200x630.png"
 TODAY = "2026-09-21"
