@@ -233,6 +233,14 @@ tinham página correspondente, mais um índice:
 | `/guias/ciclo-de-estudos/` | ciclo de estudos, como montar |
 | `/guias/quantas-horas-estudar-por-dia/` | quantas horas estudar por dia |
 | `/guias/revisao-espacada/` | revisão espaçada, intervalos de revisão |
+| `/guias/disciplina-para-estudar/` | como ter disciplina para estudar, criar hábito de estudo |
+
+O último nasceu de uma lacuna que só apareceu quando procuramos por ela: o site descrevia o
+produto na língua da **organização** ("rotina" 24 vezes, "constância" 22) e não tinha nada na
+língua de quem busca — disciplina, hábito, motivação, procrastinação. "Constância" descreve bem o
+produto e ninguém a digita no Google. "Disciplina" aparecia 6 vezes, quase sempre em sentido
+contrário ao da busca ("o problema não é disciplina") e uma delas com outro significado (matéria
+de faculdade). Nenhum título, descrição ou H1 trazia essa família de palavras.
 
 Decisões tomadas, e os porquês:
 
@@ -251,7 +259,11 @@ Decisões tomadas, e os porquês:
   **não** foi alterado.
 - **Sem promessa de resultado.** Os guias dizem o que não dá para afirmar: que tempo não mede
   aprendizado, que não existe número de horas que garanta aprovação, que recuperar tempo não é o
-  mesmo que recuperar conteúdo.
+  mesmo que recuperar conteúdo, que nenhum app cria disciplina e que "21 dias para criar um
+  hábito" não tem base sólida. O guia de disciplina também diz quando o caso pede ajuda
+  profissional em vez de aplicativo.
+- **Tempo de leitura** no topo de cada guia, calculado por `scripts/tempo_leitura.py` a 200
+  palavras por minuto — número derivado do texto, não estimado à mão.
 
 Oportunidade ainda **não executada**: `/contato/` é a página mais fraca do conjunto — cumpre a
 função, mas tem pouco texto rastreável.

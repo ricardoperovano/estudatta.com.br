@@ -161,6 +161,16 @@ PAGES = {
         "breadcrumb": "Quantas horas estudar por dia",
         "parent": ("Guias", "/guias/"),
     },
+    "guias/disciplina-para-estudar/index.html": {
+        "path": "/guias/disciplina-para-estudar/",
+        "title": "Como ter disciplina para estudar | Estudatta",
+        "description": "Disciplina costuma ser o diagnóstico errado. Veja como montar o gatilho, definir a meta que você cumpre no pior dia, atravessar a semana ruim e medir o que importa.",
+        "keywords": "como ter disciplina para estudar, disciplina nos estudos, criar hábito de estudar, como não procrastinar nos estudos, rotina de estudos, falta de motivação para estudar, foco nos estudos",
+        "og_title": "Como ter disciplina para estudar (sem contar com força de vontade)",
+        "h1": None,
+        "breadcrumb": "Disciplina para estudar",
+        "parent": ("Guias", "/guias/"),
+    },
     "guias/revisao-espacada/index.html": {
         "path": "/guias/revisao-espacada/",
         "title": "Revisão espaçada: o que é e como aplicar | Estudatta",

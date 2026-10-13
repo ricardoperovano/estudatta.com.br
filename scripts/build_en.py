@@ -187,6 +187,7 @@ PT_ONLY = {
     "guias/ciclo-de-estudos/index.html": "0.7",
     "guias/quantas-horas-estudar-por-dia/index.html": "0.7",
     "guias/revisao-espacada/index.html": "0.7",
+    "guias/disciplina-para-estudar/index.html": "0.7",
 }
 
 # sitemap com alternates
