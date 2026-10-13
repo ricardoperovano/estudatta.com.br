@@ -121,6 +121,8 @@ def build_page(rel: str):
     # a fonte em português pode já ter hreflang e o seletor EN (rodadas anteriores): remove antes
     src = re.sub(r'  <link rel="alternate" hreflang="[^"]+" href="[^"]+">\n', "", src)
     src = re.sub(r'  <a class="lang" [^\n]*data-lang-switch="en"[^\n]*\n', "", src)
+    # links/blocos que só existem em português (guias): saem da versão em inglês
+    src = re.sub(r'<(a|span|p|li)\b[^>]*\bdata-pt-only\b[^>]*>.*?</\1>', "", src, flags=re.S)
     s = translate_html(src)
     s = relink(s)
     s = s.replace('<html lang="pt-BR">', '<html lang="en">')
@@ -177,6 +179,16 @@ if "data-404-en" not in s:
     s = s.replace(m.group(0), pt_sec + en_sec)
 p.write_text(s, encoding="utf-8")
 
+# Páginas que existem só em português (os guias): entram no sitemap sem alternates e não têm
+# versão em /en/. Os links para elas saem da versão em inglês (ver `data-pt-only`).
+PT_ONLY = {
+    "guias/index.html": "0.7",
+    "guias/recuperar-estudos-atrasados/index.html": "0.7",
+    "guias/ciclo-de-estudos/index.html": "0.7",
+    "guias/quantas-horas-estudar-por-dia/index.html": "0.7",
+    "guias/revisao-espacada/index.html": "0.7",
+}
+
 # sitemap com alternates
 order = ["index.html", "concursos/index.html", "vestibular-enem/index.html", "idiomas/index.html", "planos/index.html", "faq/index.html", "contato/index.html", "privacidade/index.html", "termos/index.html"]
 prio = {"": "1.0", "concursos": "0.9", "vestibular-enem": "0.9", "idiomas": "0.9", "planos": "0.8", "faq": "0.6", "contato": "0.3", "privacidade": "0.2", "termos": "0.2"}
@@ -191,6 +203,11 @@ for rel in order:
     en_rel = en_path(slug).strip("/") + "/index.html"
     for loc, pr, src in ((pt_url, prio[slug], rel), (en_url, str(round(float(prio[slug]) * 0.8, 1)), en_rel)):
         rows.append(f"  <url><loc>{loc}</loc><lastmod>{seo.last_modified(src)}</lastmod><changefreq>{freq}</changefreq><priority>{pr}</priority>{alts}</url>")
+for rel, pr in PT_ONLY.items():
+    if not (ROOT / rel).exists():
+        continue
+    loc = BASE + "/" + rel[: -len("index.html")]
+    rows.append(f"  <url><loc>{loc}</loc><lastmod>{seo.last_modified(rel)}</lastmod><changefreq>monthly</changefreq><priority>{pr}</priority></url>")
 (ROOT / "sitemap.xml").write_text(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
     + "\n".join(rows) + "\n</urlset>\n", encoding="utf-8")

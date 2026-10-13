@@ -4,9 +4,11 @@ Auditoria técnica e editorial do site institucional (`https://estudatta.com.br`
 com o app (`https://app.estudatta.com.br`). Executada em **13/10/2026** sobre o site publicado e
 sobre o repositório, com correções aplicadas no código existente.
 
-O site **não foi redesenhado**: nenhuma página nova, nenhuma mudança de layout, de identidade
-visual ou de funcionalidade. Só foram alterados metadados, geradores, configuração e três trechos
-de conteúdo com defeito comprovado.
+O site **não foi redesenhado**: nenhuma mudança de layout, de identidade visual ou de
+funcionalidade. A auditoria em si só alterou metadados, geradores, configuração e três trechos de
+conteúdo com defeito comprovado. Numa segunda etapa, já com autorização, entraram o tipo de
+sessão Devocional e a seção de guias (seção 6) — reaproveitando o layout existente, sem CSS novo
+e sem tocar no menu.
 
 ---
 
@@ -214,17 +216,45 @@ SEO. Em particular:
 - O FAQ afirma que o relatório mostra constância, tempo e taxa de acerto — e não diz se a pessoa
   está aprendendo.
 
-Nenhuma reescrita foi necessária. **Nenhuma página nova foi criada**, conforme a restrição.
+Nenhuma reescrita foi necessária nas páginas comerciais.
 
-Oportunidades editoriais identificadas e **não executadas**, para decisão futura:
+Duas lacunas identificadas na auditoria foram cobertas em seguida, com autorização:
 
-1. O tipo de estudo **Devocional**, já no app, não aparece em nenhuma página do site (nem em
-   `/en/`). É conteúdo real que hoje não é rastreável.
-2. Consultas informacionais com intenção clara e sem página correspondente: "como recuperar
-   estudos atrasados", "ciclo de estudos para concurso", "quantas horas estudar por dia",
-   "revisão espaçada como funciona". Hoje caberiam numa seção de conteúdo própria — que exige
-   autorização para ser criada.
-3. `/contato/` é a página mais fraca do conjunto: cumpre a função, mas tem pouco texto rastreável.
+**Devocional.** O tipo de sessão já existia no app e não aparecia em lugar nenhum do site. Entrou
+na home (texto e etiqueta dos tipos de sessão) e no FAQ, com resposta honesta: o app organiza e
+acompanha a leitura, não traz o texto nem um plano de leitura pronto. Traduzido para `/en/`.
+
+**Guias** (`/guias/`). Quatro textos para consultas informacionais com intenção clara que não
+tinham página correspondente, mais um índice:
+
+| URL | Consulta principal |
+|---|---|
+| `/guias/recuperar-estudos-atrasados/` | como recuperar estudos atrasados |
+| `/guias/ciclo-de-estudos/` | ciclo de estudos, como montar |
+| `/guias/quantas-horas-estudar-por-dia/` | quantas horas estudar por dia |
+| `/guias/revisao-espacada/` | revisão espaçada, intervalos de revisão |
+
+Decisões tomadas, e os porquês:
+
+- **Só em português.** A intenção de busca que os motivou é em português; inventar uma versão em
+  inglês criaria páginas sem demanda comprovada. O gerador ganhou uma lista `PT_ONLY`: essas URLs
+  entram no sitemap sem alternates e não declaram `hreflang`, porque não têm par.
+- **Links marcados `data-pt-only`.** O que aponta para um guia é removido da versão em inglês,
+  para que nenhuma página `/en/` mande o leitor para um texto em português. O teste automatizado
+  falha se isso escapar.
+- **Reaproveitam o layout `.doc`**, o mesmo de Termos e Privacidade. Nenhum CSS novo.
+- **FAQ real no fim de cada guia**, o que gera `FAQPage` a partir dos `<details>` — o mesmo
+  mecanismo das outras páginas.
+- **Trilha de três níveis** (Início › Guias › guia) no `BreadcrumbList`.
+- **Descoberta pelo rodapé** das páginas em português e por links contextuais onde a dúvida
+  aparece de verdade (a resposta do FAQ sobre pendência leva ao guia de atraso). O menu principal
+  **não** foi alterado.
+- **Sem promessa de resultado.** Os guias dizem o que não dá para afirmar: que tempo não mede
+  aprendizado, que não existe número de horas que garanta aprovação, que recuperar tempo não é o
+  mesmo que recuperar conteúdo.
+
+Oportunidade ainda **não executada**: `/contato/` é a página mais fraca do conjunto — cumpre a
+função, mas tem pouco texto rastreável.
 
 ---
 
@@ -232,7 +262,6 @@ Oportunidades editoriais identificadas e **não executadas**, para decisão futu
 
 | Pendência | Observação |
 |---|---|
-| **Publicar as correções** | As mudanças estão commitadas e **não** foram enviadas. No GitHub Pages, `git push` publica — por isso aguarda autorização |
 | **Google Search Console** | Sem acesso nesta sessão. Impressões, cliques, consultas, cobertura e canônica escolhida pelo Google não foram analisados, e não foram inventados |
 | **Dados jurídicos** | Termos e Privacidade trazem, em destaque e assumidamente, campos a preencher: razão social, CNPJ, endereço, idade mínima, política de reembolso e foro. Não foram preenchidos: inventar dado jurídico seria pior do que a lacuna |
 | **Captura real do app** | `screenshot` foi removido do JSON-LD por apontar para material de divulgação. Uma captura verdadeira do app pode ser adicionada depois |

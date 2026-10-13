@@ -14,6 +14,7 @@ O site usa o **tema claro** do design system (fundo `#f3f5fe`, superfícies `#fa
 | `/vestibular-enem` | `vestibular-enem/index.html` |
 | `/planos` | `planos/index.html` |
 | `/en/…` | `en/**/index.html` (gerado; ver abaixo) |
+| `/guias` e `/guias/<guia>` | `guias/index.html` e `guias/*/index.html` — só em português (lista `PT_ONLY` em `scripts/build_en.py`); links para eles levam `data-pt-only`, que os remove da versão em inglês |
 | `/faq` | `faq/index.html` |
 | `/contato` | `contato/index.html` |
 | `/privacidade` | `privacidade/index.html` |

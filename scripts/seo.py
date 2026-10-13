@@ -122,6 +122,55 @@ PAGES = {
         "h1": None,
         "breadcrumb": "Termos de uso",
     },
+    "guias/index.html": {
+        "path": "/guias/",
+        "title": "Guias de estudo: rotina, revisão e tempo | Estudatta",
+        "description": "Guias diretos sobre organizar o estudo: recuperar o que atrasou, montar um ciclo de estudos, decidir quantas horas estudar por dia e aplicar revisão espaçada.",
+        "keywords": "guias de estudo, como organizar os estudos, rotina de estudos, ciclo de estudos, revisão espaçada, quantas horas estudar por dia",
+        "og_title": "Guias de estudo do Estudatta",
+        "h1": None,
+        "breadcrumb": "Guias",
+    },
+    "guias/recuperar-estudos-atrasados/index.html": {
+        "path": "/guias/recuperar-estudos-atrasados/",
+        "title": "Como recuperar estudos atrasados | Estudatta",
+        "description": "Atrasou no cronograma? Meça a pendência em minutos e escolha entre distribuir nos próximos dias, acumular num bloco ou riscar — com os critérios de cada caminho.",
+        "keywords": "como recuperar estudos atrasados, estudo atrasado, cronograma de estudos atrasado, recuperar matéria atrasada, pendência de estudo, voltar a estudar depois de parar",
+        "og_title": "Como recuperar estudos atrasados sem recomeçar do zero",
+        "h1": None,
+        "breadcrumb": "Como recuperar estudos atrasados",
+        "parent": ("Guias", "/guias/"),
+    },
+    "guias/ciclo-de-estudos/index.html": {
+        "path": "/guias/ciclo-de-estudos/",
+        "title": "Ciclo de estudos: como montar o seu | Estudatta",
+        "description": "O que é ciclo de estudos, como calcular os blocos e os pesos das matérias, quando ele é melhor que o cronograma por dia da semana e os erros mais comuns.",
+        "keywords": "ciclo de estudos, como montar ciclo de estudos, ciclo de estudos concurso, ciclo ou cronograma de estudos, peso das matérias, organizar matérias para estudar",
+        "og_title": "Ciclo de estudos: como montar e quando ele funciona",
+        "h1": None,
+        "breadcrumb": "Ciclo de estudos",
+        "parent": ("Guias", "/guias/"),
+    },
+    "guias/quantas-horas-estudar-por-dia/index.html": {
+        "path": "/guias/quantas-horas-estudar-por-dia/",
+        "title": "Quantas horas estudar por dia | Estudatta",
+        "description": "Não existe número universal. Veja como calcular sua carga a partir do tempo livre real, o que o tempo mede e o que não mede, e como testar a meta em duas semanas.",
+        "keywords": "quantas horas estudar por dia, carga horária de estudo, quantas horas estudar para concurso, meta diária de estudo, tempo de estudo por dia",
+        "og_title": "Quantas horas estudar por dia: como chegar ao seu número",
+        "h1": None,
+        "breadcrumb": "Quantas horas estudar por dia",
+        "parent": ("Guias", "/guias/"),
+    },
+    "guias/revisao-espacada/index.html": {
+        "path": "/guias/revisao-espacada/",
+        "title": "Revisão espaçada: o que é e como aplicar | Estudatta",
+        "description": "Como funciona a revisão espaçada, quais intervalos usar (1, 7 e 30 dias), o que vale revisar, por que reler não conta e como encaixar as revisões na rotina.",
+        "keywords": "revisão espaçada, repetição espaçada, intervalos de revisão, curva do esquecimento, como revisar matéria, revisão para concurso",
+        "og_title": "Revisão espaçada: o que é e como aplicar",
+        "h1": None,
+        "breadcrumb": "Revisão espaçada",
+        "parent": ("Guias", "/guias/"),
+    },
 }
 
 CLEAN_PATHS = ["idiomas", "concursos", "vestibular-enem", "planos", "faq", "contato", "privacidade", "termos"]
@@ -210,13 +259,12 @@ def build_head(rel: str, cfg: dict, body: str, alternates: list[str] | None = No
     if rel == "index.html":
         graph += [ORG, WEBSITE, APP]
     else:
-        graph.append({
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {"@type": "ListItem", "position": 1, "name": "Início", "item": f"{BASE}/"},
-                {"@type": "ListItem", "position": 2, "name": cfg["breadcrumb"], "item": url},
-            ],
-        })
+        trilha = [{"@type": "ListItem", "position": 1, "name": "Início", "item": f"{BASE}/"}]
+        if cfg.get("parent"):
+            nome, caminho = cfg["parent"]
+            trilha.append({"@type": "ListItem", "position": 2, "name": nome, "item": f"{BASE}{caminho}"})
+        trilha.append({"@type": "ListItem", "position": len(trilha) + 1, "name": cfg["breadcrumb"], "item": url})
+        graph.append({"@type": "BreadcrumbList", "itemListElement": trilha})
         graph.append({"@type": "WebPage", "@id": url, "url": url, "name": cfg["title"], "description": cfg["description"], "inLanguage": "pt-BR", "isPartOf": {"@id": f"{BASE}/#site"}, "about": {"@id": f"{BASE}/#app"}})
     items = faq_items(body)
     if items:

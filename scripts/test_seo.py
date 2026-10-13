@@ -53,8 +53,10 @@ for u in urls:
     lm = u.find("s:lastmod", NS)
     checa(lm is not None and re.fullmatch(r"\d{4}-\d{2}-\d{2}", lm.text or ""), f"sitemap: lastmod inválido em {loc}")
     alts = {a.get("hreflang"): a.get("href") for a in u.findall("x:link", NS)}
-    checa(set(alts) == {"pt-BR", "en", "x-default"}, f"sitemap: alternates incompletos em {loc}")
-    checa(loc in alts.values(), f"sitemap: {loc} não aparece nos próprios alternates")
+    # páginas só em português (guias) não têm par em inglês: ou não declaram alternates, ou declaram os três
+    if alts:
+        checa(set(alts) == {"pt-BR", "en", "x-default"}, f"sitemap: alternates incompletos em {loc}")
+        checa(loc in alts.values(), f"sitemap: {loc} não aparece nos próprios alternates")
 
 robots = (ROOT / "robots.txt").read_text(encoding="utf-8")
 checa("User-agent: *" in robots, "robots.txt sem User-agent")
@@ -62,6 +64,14 @@ checa(f"Sitemap: {BASE}/sitemap.xml" in robots, "robots.txt sem a linha Sitemap"
 checa("Disallow: /\n" not in robots, "robots.txt bloqueia o site inteiro")
 
 # ---------------------------------------------------------------- páginas
+PT_ONLY_PREFIXO = "guias/"
+
+
+def pares_esperados(rel: str) -> bool:
+    """True quando a página deve ter versão no outro idioma (e portanto hreflang)."""
+    return not rel.startswith(PT_ONLY_PREFIXO)
+
+
 paginas = sorted({rel_de_url(loc) for loc in locs})
 pares: dict[str, str] = {}
 for rel in paginas:
@@ -82,8 +92,9 @@ for rel in paginas:
     checa(canon == url, f"{ident} canonical {canon!r} deveria ser {url!r}")
 
     alts = dict(re.findall(r'<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"', s))
-    checa(set(alts) == {"pt-BR", "en", "x-default"}, f"{ident} hreflang incompleto: {sorted(alts)}")
+    checa(bool(alts) == bool(pares_esperados(rel)), f"{ident} hreflang {'ausente' if not alts else 'indevido'}")
     if alts:
+        checa(set(alts) == {"pt-BR", "en", "x-default"}, f"{ident} hreflang incompleto: {sorted(alts)}")
         checa(url in alts.values(), f"{ident} não se referencia no próprio hreflang")
         outro = alts["en"] if not rel.startswith("en/") else alts["pt-BR"]
         pares[url] = outro
@@ -113,6 +124,9 @@ for rel in paginas:
         checa(ok, f"{ident} link/recurso quebrado: {alvo}")
 
     checa(f'{APP}/cadastro' in s, f"{ident} sem link de cadastro para o app")
+    if rel.startswith("en/"):
+        checa(f'href="/{PT_ONLY_PREFIXO}' not in s,
+              f"{ident} aponta para página que só existe em português (use data-pt-only na origem)")
 
 # hreflang recíproco de verdade: A aponta para B e B aponta de volta para A
 for a, b in pares.items():

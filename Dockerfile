@@ -10,6 +10,7 @@ COPY en /usr/share/nginx/html/en
 COPY concursos /usr/share/nginx/html/concursos
 COPY planos /usr/share/nginx/html/planos
 COPY faq /usr/share/nginx/html/faq
+COPY guias /usr/share/nginx/html/guias
 COPY contato /usr/share/nginx/html/contato
 COPY privacidade /usr/share/nginx/html/privacidade
 COPY termos /usr/share/nginx/html/termos
