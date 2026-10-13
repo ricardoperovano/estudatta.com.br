@@ -9,6 +9,9 @@ import subprocess
 ROOT = pathlib.Path(__file__).resolve().parents[1]  # raiz do repositório
 BASE = "https://estudatta.com.br"
 OG_IMG = f"{BASE}/assets/divulgacao/compartilhamento-1200x630.png"
+# Atendimento ao visitante (Monitchat). Carrega assíncrono e guarda um identificador de
+# visitante no localStorage do navegador — citar na política de privacidade.
+CHAT = '  <script async src="https://alb.monitchat.com/widget/wgt_5G7Iy2C6DLxjetNwjyDhdnCo5t6V.js"></script>'
 
 
 def last_modified(rel: str) -> str:
@@ -300,7 +303,8 @@ def rewrite(rel: str, cfg: dict) -> None:
     first = [ln for ln in keep if "charset" in ln or "viewport" in ln]
     rest = [ln for ln in keep if ln not in first]
     body = s[head_m.end():]
-    new_head = "\n" + "\n".join(first) + "\n" + build_head(rel, cfg, body, alts) + "\n" + "\n".join(rest) + "\n  <link rel=\"preconnect\" href=\"https://app.estudatta.com.br\" crossorigin>\n"
+    new_head = ("\n" + "\n".join(first) + "\n" + build_head(rel, cfg, body, alts) + "\n" + "\n".join(rest)
+                + "\n" + CHAT + "\n  <link rel=\"preconnect\" href=\"https://app.estudatta.com.br\" crossorigin>\n")
     s = s[: head_m.start()] + "<head>" + new_head + "</head>" + body
     if cfg["h1"]:
         old, new = cfg["h1"]
@@ -322,6 +326,8 @@ if __name__ == "__main__":
     s = p.read_text(encoding="utf-8")
     for c in CLEAN_PATHS:
         s = re.sub(rf'href="/{c}"', f'href="/{c}/"', s)
+    if "monitchat" not in s:
+        s = s.replace("</head>", CHAT + "\n</head>", 1)
     p.write_text(s, encoding="utf-8")
 
     # --- /ingles → /idiomas/ (GitHub Pages não aplica o redirect do nginx) ---
