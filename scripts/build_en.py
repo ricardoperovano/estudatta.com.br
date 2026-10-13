@@ -188,8 +188,9 @@ for rel in order:
     freq = "monthly" if prio[slug] >= "0.6" else "yearly"
     alts = (f'<xhtml:link rel="alternate" hreflang="pt-BR" href="{pt_url}"/><xhtml:link rel="alternate" hreflang="en" href="{en_url}"/>'
             f'<xhtml:link rel="alternate" hreflang="x-default" href="{pt_url}"/>')
-    for loc, pr in ((pt_url, prio[slug]), (en_url, str(round(float(prio[slug]) * 0.8, 1)))):
-        rows.append(f"  <url><loc>{loc}</loc><lastmod>{seo.TODAY}</lastmod><changefreq>{freq}</changefreq><priority>{pr}</priority>{alts}</url>")
+    en_rel = en_path(slug).strip("/") + "/index.html"
+    for loc, pr, src in ((pt_url, prio[slug], rel), (en_url, str(round(float(prio[slug]) * 0.8, 1)), en_rel)):
+        rows.append(f"  <url><loc>{loc}</loc><lastmod>{seo.last_modified(src)}</lastmod><changefreq>{freq}</changefreq><priority>{pr}</priority>{alts}</url>")
 (ROOT / "sitemap.xml").write_text(
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
     + "\n".join(rows) + "\n</urlset>\n", encoding="utf-8")

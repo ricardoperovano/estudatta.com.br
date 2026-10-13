@@ -202,7 +202,7 @@ T = {
 'R$ 94,80': 'R$ 94.80',
 'R$ 190,80': 'R$ 190.80',
 # --- idiomas ---
-'App para estudar inglês e outros idiomas todo dia | Estudatta': 'Language study planner: study English or any language every day | Estudatta',
+'App para estudar inglês e outros idiomas todo dia | Estudatta': 'Language study planner: English and 90+ languages | Estudatta',
 'Estude idiomas 60 minutos por dia.': 'Study a language 60 minutes a day.',
 'Mesmo depois de ontem.': 'Even after yesterday.',
 'Inglês, espanhol, francês, japonês, Libras ou qualquer um de mais de 90 idiomas. Curso, podcast, série ou livro: o app acompanha o tempo dedicado a cada frente e mantém a constância visível. Ele não ensina o idioma — organiza o estudo que você já faz e mostra como retomar quando um dia fica para trás.': 'English, Spanish, French, Japanese, sign language or any of more than 90 languages. Course, podcast, TV series or book: the app tracks the time spent on each front and keeps your consistency visible. It doesn’t teach the language — it organizes the studying you already do and shows you how to catch up when a day slips.',

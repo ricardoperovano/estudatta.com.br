@@ -4,11 +4,36 @@ import html
 import json
 import pathlib
 import re
+import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]  # raiz do repositório
 BASE = "https://estudatta.com.br"
 OG_IMG = f"{BASE}/assets/divulgacao/compartilhamento-1200x630.png"
-TODAY = "2026-09-21"
+
+
+def last_modified(rel: str) -> str:
+    """Data da última alteração real do arquivo, pelo git (AAAA-MM-DD).
+
+    O sitemap antes carimbava uma data fixa em todas as URLs, o que passava a mecanismos de
+    busca uma data que não correspondia à alteração do conteúdo. Sem git (tarball, build
+    isolado), cai para a data de modificação do arquivo.
+    """
+    import datetime
+
+    def git(*args: str) -> str:
+        return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True,
+                              timeout=15).stdout.strip()
+
+    try:
+        # alteração ainda não commitada conta como hoje: o arquivo mudou de fato
+        if git("status", "--porcelain", "--", rel):
+            return datetime.date.today().isoformat()
+        d = git("log", "-1", "--format=%cs", "--", rel)
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", d):
+            return d
+    except Exception:
+        pass
+    return datetime.date.fromtimestamp((ROOT / rel).stat().st_mtime).isoformat()
 
 PAGES = {
     "index.html": {
@@ -146,7 +171,6 @@ APP = {
         "Importação do edital em texto, CSV ou PDF",
         "Conquistas, níveis e desafios semanais",
     ],
-    "screenshot": OG_IMG,
     "publisher": {"@id": f"{BASE}/#org"},
     "offers": [
         {"@type": "Offer", "name": "Gratuito", "price": "0", "priceCurrency": "BRL", "url": "https://app.estudatta.com.br/cadastro"},
@@ -156,13 +180,14 @@ APP = {
 }
 
 
-def build_head(rel: str, cfg: dict, body: str) -> str:
+def build_head(rel: str, cfg: dict, body: str, alternates: list[str] | None = None) -> str:
     url = BASE + cfg["path"]
     lines = [
         f"  <title>{esc(cfg['title'])}</title>",
         f'  <meta name="description" content="{esc(cfg["description"])}">',
         f'  <meta name="keywords" content="{esc(cfg["keywords"])}">',
         f'  <link rel="canonical" href="{url}">',
+        *(alternates or []),
         '  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">',
         '  <meta name="theme-color" content="#f3f5fe">',
         '  <meta name="author" content="Estudatta">',
@@ -201,6 +226,9 @@ def build_head(rel: str, cfg: dict, body: str) -> str:
 
 
 HEAD_KEEP = re.compile(r'^\s*(<meta charset|<meta name="viewport"|<link rel="icon"|<link rel="apple-touch-icon"|<link rel="preload"|<link rel="stylesheet"|<script src=)')
+# As alternativas de idioma são escritas por build_en.py; preservá-las aqui evita que uma
+# regeneração só do SEO derrube o hreflang das páginas em português.
+HREFLANG = re.compile(r'^\s*<link rel="alternate" hreflang=')
 
 
 def rewrite(rel: str, cfg: dict) -> None:
@@ -209,12 +237,12 @@ def rewrite(rel: str, cfg: dict) -> None:
     head_m = re.search(r"<head>(.*?)</head>", s, flags=re.S)
     old_head = head_m.group(1)
     keep = [ln for ln in old_head.splitlines() if HEAD_KEEP.match(ln)]
+    alts = [ln.rstrip() for ln in old_head.splitlines() if HREFLANG.match(ln)]
     # ordem: charset, viewport, SEO, ícones/preload/css/js
     first = [ln for ln in keep if "charset" in ln or "viewport" in ln]
     rest = [ln for ln in keep if ln not in first]
     body = s[head_m.end():]
-    ga = ['  <!-- Google tag (gtag.js) -->', '  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8XFNHTHEX7"></script>', '  <script src="/assets/js/analytics.js"></script>']
-    new_head = "\n" + "\n".join(first) + "\n" + build_head(rel, cfg, body) + "\n" + "\n".join(rest) + "\n" + "\n".join(ga) + "\n  <link rel=\"preconnect\" href=\"https://app.estudatta.com.br\" crossorigin>\n"
+    new_head = "\n" + "\n".join(first) + "\n" + build_head(rel, cfg, body, alts) + "\n" + "\n".join(rest) + "\n  <link rel=\"preconnect\" href=\"https://app.estudatta.com.br\" crossorigin>\n"
     s = s[: head_m.start()] + "<head>" + new_head + "</head>" + body
     if cfg["h1"]:
         old, new = cfg["h1"]
@@ -236,40 +264,30 @@ if __name__ == "__main__":
     s = p.read_text(encoding="utf-8")
     for c in CLEAN_PATHS:
         s = re.sub(rf'href="/{c}"', f'href="/{c}/"', s)
-    if "gtag/js" not in s:
-        s = s.replace("</head>", '  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8XFNHTHEX7"></script>\n  <script src="/assets/js/analytics.js"></script>\n</head>', 1)
     p.write_text(s, encoding="utf-8")
 
     # --- /ingles → /idiomas/ (GitHub Pages não aplica o redirect do nginx) ---
     (ROOT / "ingles").mkdir(exist_ok=True)
     (ROOT / "ingles/index.html").write_text(
         """<!doctype html>
-    <html lang="pt-BR">
-    <head>
-      <meta charset="utf-8">
-      <title>Idiomas · Estudatta</title>
-      <meta name="robots" content="noindex, follow">
-      <link rel="canonical" href="https://estudatta.com.br/idiomas/">
-      <meta http-equiv="refresh" content="0; url=/idiomas/">
-      <script>location.replace("/idiomas/" + location.hash);</script>
-    </head>
-    <body>
-      <p>A página de inglês agora é a de idiomas: <a href="/idiomas/">estudatta.com.br/idiomas</a>.</p>
-    </body>
-    </html>
-    """,
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Idiomas · Estudatta</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://estudatta.com.br/idiomas/">
+  <meta http-equiv="refresh" content="0; url=/idiomas/">
+  <script>location.replace("/idiomas/" + location.hash);</script>
+</head>
+<body>
+  <p>A página de inglês agora é a de idiomas: <a href="/idiomas/">estudatta.com.br/idiomas</a>.</p>
+</body>
+</html>
+""",
         encoding="utf-8",
     )
 
-    # --- sitemap com lastmod e prioridade ---
-    order = ["index.html", "concursos/index.html", "vestibular-enem/index.html", "idiomas/index.html", "planos/index.html", "faq/index.html", "contato/index.html", "privacidade/index.html", "termos/index.html"]
-    prio = {"/": "1.0", "/concursos/": "0.9", "/vestibular-enem/": "0.9", "/idiomas/": "0.9", "/planos/": "0.8", "/faq/": "0.6", "/contato/": "0.3", "/privacidade/": "0.2", "/termos/": "0.2"}
-    rows = []
-    for rel in order:
-        if not (ROOT / rel).exists():
-            continue
-        path = PAGES[rel]["path"]
-        freq = "monthly" if prio[path] >= "0.6" else "yearly"
-        rows.append(f"  <url><loc>{BASE}{path}</loc><lastmod>{TODAY}</lastmod><changefreq>{freq}</changefreq><priority>{prio[path]}</priority></url>")
-    (ROOT / "sitemap.xml").write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "\n".join(rows) + "\n</urlset>\n", encoding="utf-8")
-    print("ok")
+    # --- sitemap ---
+    # O sitemap é escrito por scripts/build_en.py, que conhece as URLs em inglês e os
+    # alternates hreflang. Gerá-lo aqui também derrubaria as 9 URLs de /en/ do arquivo.
+    print("ok (rode scripts/build_en.py em seguida: ele gera /en/ e o sitemap)")

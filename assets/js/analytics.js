@@ -71,15 +71,38 @@
     document.body.appendChild(box);
   }
 
+  /*
+    Cliques que levam ao app (criar conta, começar grátis, entrar). Mede a intenção, não o
+    cadastro: só o app sabe se a conta foi criada. Só é enviado se o GA foi carregado, isto é,
+    depois do consentimento.
+  */
+  function trackCta(e) {
+    if (!loaded || !window.gtag) return;
+    var a = e.target.closest("a[href]");
+    if (!a) return;
+    var app = (window.ESTUDATTA && window.ESTUDATTA.appUrl) || "https://app.estudatta.com.br";
+    var href = a.getAttribute("href") || "";
+    if (href.indexOf(app) !== 0) return;
+    var destino = href.indexOf("/cadastro") > -1 ? "cadastro" : href.indexOf("/entrar") > -1 ? "entrar" : "app";
+    gtag("event", "click_app", {
+      destino: destino,
+      texto: (a.textContent || "").trim().slice(0, 60),
+      pagina: location.pathname,
+    });
+  }
+
   function init() {
     var choice = read();
     if (choice === "granted") loadGa();
     else if (choice !== "denied") showBanner();
     document.addEventListener("click", function (e) {
       var a = e.target.closest("[data-cookie-prefs]");
-      if (!a) return;
-      e.preventDefault();
-      showBanner();
+      if (a) {
+        e.preventDefault();
+        showBanner();
+        return;
+      }
+      trackCta(e);
     });
   }
 

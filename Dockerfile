@@ -4,6 +4,9 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY index.html 404.html robots.txt sitemap.xml /usr/share/nginx/html/
 COPY assets /usr/share/nginx/html/assets
 COPY idiomas /usr/share/nginx/html/idiomas
+COPY vestibular-enem /usr/share/nginx/html/vestibular-enem
+COPY ingles /usr/share/nginx/html/ingles
+COPY en /usr/share/nginx/html/en
 COPY concursos /usr/share/nginx/html/concursos
 COPY planos /usr/share/nginx/html/planos
 COPY faq /usr/share/nginx/html/faq
