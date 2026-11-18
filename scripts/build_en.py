@@ -186,6 +186,7 @@ PT_ONLY = {
     "guias/recuperar-estudos-atrasados/index.html": "0.7",
     "guias/ciclo-de-estudos/index.html": "0.7",
     "guias/quantas-horas-estudar-por-dia/index.html": "0.7",
+    "guias/horas-de-curso-em-dias/index.html": "0.7",
     "guias/revisao-espacada/index.html": "0.7",
     "guias/disciplina-para-estudar/index.html": "0.7",
 }

@@ -326,6 +326,7 @@ table.compare { width: 100%; min-width: 480px; border-collapse: collapse; text-a
 .doc table { border-collapse: collapse; font-size: 14px; width: 100%; }
 .doc th, .doc td { text-align: left; padding: 8px 10px; border-top: 1px solid var(--n800); vertical-align: top; color: var(--n300); }
 .doc th { color: var(--text); font-weight: 500; }
+.doc th[scope="row"] { white-space: nowrap; }
 
 /* ---------- 404 ---------- */
 .notfound { display: flex; flex-direction: column; justify-content: center; gap: 24px; min-height: 60dvh; padding: clamp(56px, 10vw, 112px) 0; }

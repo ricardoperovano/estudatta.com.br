@@ -164,6 +164,16 @@ PAGES = {
         "breadcrumb": "Quantas horas estudar por dia",
         "parent": ("Guias", "/guias/"),
     },
+    "guias/horas-de-curso-em-dias/index.html": {
+        "path": "/guias/horas-de-curso-em-dias/",
+        "title": "30 horas de curso são quantos dias? Tabela e conta | Estudatta",
+        "description": "Depende de quantas horas você estuda por dia: 30 dias com 1 hora, 15 com 2, 8 com 4. Veja a conta e as tabelas para cursos de 20 a 360 horas, em dias e em semanas.",
+        "keywords": "30 horas de curso são quantos dias, horas de curso em dias, 40 horas de curso são quantos dias, 60 horas de curso são quantos dias, carga horária de curso, quanto tempo dura um curso",
+        "og_title": "Horas de curso em dias: 30, 40, 60 e até 360 horas",
+        "h1": None,
+        "breadcrumb": "Horas de curso em dias",
+        "parent": ("Guias", "/guias/"),
+    },
     "guias/disciplina-para-estudar/index.html": {
         "path": "/guias/disciplina-para-estudar/",
         "title": "Como ter disciplina para estudar | Estudatta",
